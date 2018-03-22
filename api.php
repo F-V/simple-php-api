@@ -10,7 +10,7 @@ require_once('api.config.php');
 // Method ophalen, wat routing voorzien en eventuele input lezen.
 $method = $_SERVER['REQUEST_METHOD'];
 
-// als er waarden in de url zijn opgegeven, geven we een fout.
+// als er geen waarden in de url zijn opgegeven, geven we een fout.
 if(!array_key_exists('PATH_INFO',$_SERVER)){
     api_error(400,"De api verwacht een url in de vorm van api.php/{tableName}/{Pkey}");
 }
