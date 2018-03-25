@@ -1,8 +1,19 @@
 <?php
+//TODO: Add db table list.
+
 // configureer php script
 date_default_timezone_set('Europe/Brussels');
 error_reporting(E_ALL);
 ini_set('display_errors', 'On');
+
+if($allowCors){
+    // allow cors
+    header("Access-Control-Allow-Origin: *");
+    header('Access-Control-Allow-Headers: POST, GET, PUT, DELETE, OPTIONS, HEAD, authorization');
+    header('Access-Control-Allow-Methods: POST,GET,PUT,DELETE');
+    header('Access-Control-Max-Age: 1000');
+    header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
+}
 
 // importeer de settings
 require_once('api.config.php');

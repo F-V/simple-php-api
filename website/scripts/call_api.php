@@ -45,6 +45,7 @@ function CallAPI($method, $url, $data = false)
             default:
                 //gebruik dit om te debuggen wanneer je problemen tegen komt
                 echo 'Unexpected HTTP code: ', $http_code, "\n";
+                exit();
         }
     }else{
         echo "Request gaf volgende foutcode: ".curl_errno($curl)."<br>";
@@ -52,6 +53,7 @@ function CallAPI($method, $url, $data = false)
     }
 
     curl_close($curl);
+
     // normaal ga je eerst nog controleren of het resultaat wel naar verwachting is, voor deze module nemen we aan dat dit altijd zo is
-    return json_decode($result, true);
+    return json_decode($result, true);;
 }
