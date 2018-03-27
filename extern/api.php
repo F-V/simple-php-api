@@ -146,8 +146,12 @@ if ( $method == 'GET' ) {
     if (!$result) {
         api_error(404,$mysqli->error);
     }else{
-        // Bij GET, geven we de data terug
-        api_return($result);
+        // wanneer er een key aanwezig was, verwachten we 1 object, geen array
+        if($key){
+            api_return($result[0]);
+        }else{
+            api_return($result);
+        }
     }
 } elseif ( $method == 'POST' ) {
     // de id wanneer het een post was
@@ -189,12 +193,8 @@ function execute_statement(mysqli_stmt $stmt){
     $data =null;
     if($result){
         $data=array();
-        if($result->num_rows>1){
-            while($row = $result->fetch_assoc()){
-                array_push($data,$row);
-            }
-        }else if($result->num_rows==1){
-            $data = $result->fetch_assoc();
+        while($row = $result->fetch_assoc()){
+            array_push($data,$row);
         }
     }
 
