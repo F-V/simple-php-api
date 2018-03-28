@@ -13,8 +13,24 @@ function CallAPI($method, $url, $data = false)
                 curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
             break;
         case "PUT":
+            if(!$data){
+                echo "Kan niet updaten zonder data";
+                die(400);
+            }
             // voor het updaten van een object gebruiken we PUT, hiermee laten we dit ook aan cURL weten
-            curl_setopt($curl, CURLOPT_PUT, 1);
+            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "PUT");
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+
+            break;
+        case "PATCH":
+            if(!$data){
+                echo "Kan niet updaten zonder data";
+                die(400);
+            }
+            // voor het updaten van een object gebruiken we PUT, hiermee laten we dit ook aan cURL weten
+            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "PATCH");
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+
             break;
         case "DELETE":
             // voor het DELETE van een object gebruiken we DELETE, hiermee laten we dit ook aan cURL weten
@@ -39,13 +55,10 @@ function CallAPI($method, $url, $data = false)
 
     // Wanneer de API geen succesvol antwoord geeft kunnen we dat hier opvangen
     if (!curl_errno($curl)) {
-        switch ($http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE)) {
-            case 200:  # OK
-                break;
-            default:
-                //gebruik dit om te debuggen wanneer je problemen tegen komt
-                echo 'Unexpected HTTP code: ', $http_code, "\n";
-                exit();
+        $http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        if(!($http_code=200||$http_code=201)){
+            echo 'Unexpected HTTP code: ', $http_code, "\n";
+            exit();
         }
     }else{
         echo "Request gaf volgende foutcode: ".curl_errno($curl)."<br>";
@@ -54,6 +67,11 @@ function CallAPI($method, $url, $data = false)
 
     curl_close($curl);
 
-    // normaal ga je eerst nog controleren of het resultaat wel naar verwachting is, voor deze module nemen we aan dat dit altijd zo is
-    return json_decode($result, true);;
+    // indien het geen json result is geven we gewoon het resultaat terug
+    $jsonResult = json_decode($result, true);
+    if($jsonResult){
+        return $jsonResult;
+    }else{
+        return $result;
+    }
 }

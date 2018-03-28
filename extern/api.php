@@ -6,6 +6,9 @@ date_default_timezone_set('Europe/Brussels');
 error_reporting(E_ALL);
 ini_set('display_errors', 'On');
 
+// importeer de settings
+require_once('api.config.php');
+
 if($allowCors){
     // allow cors
     header("Access-Control-Allow-Origin: *");
@@ -14,9 +17,6 @@ if($allowCors){
     header('Access-Control-Max-Age: 1000');
     header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
 }
-
-// importeer de settings
-require_once('api.config.php');
 
 // Method ophalen, wat routing voorzien en eventuele input lezen.
 $method = $_SERVER['REQUEST_METHOD'];
@@ -106,11 +106,11 @@ if ( $method !== "POST" && ! empty( $key ) ) {
     }
 
     // geen pk gevonden
-    if ( empty( $pkResult ) || ! is_array( $pkResult ) || ! array_key_exists( "Column_name", $pkResult ) || empty( $pkResult['Column_name'] ) ) {
+    if ( empty( $pkResult ) || !is_array( $pkResult ) || ! array_key_exists( "Column_name", $pkResult[0] ) || empty( $pkResult[0]['Column_name'] ) ) {
         api_error(500,"Onverwacht antwoord voor de primary key informatie.".PHP_EOL.print_r($pkResult,true));
     }
 
-    $pk = $pkResult['Column_name'];
+    $pk = $pkResult[0]['Column_name'];
 }
 
 // Maak een statement op basis van de method
