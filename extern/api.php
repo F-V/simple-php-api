@@ -143,8 +143,8 @@ switch ( $method ) {
 $result = execute_statement($stmt);
 
 if ( $method == 'GET' ) {
-    if (!$result) {
-        api_error(404,$mysqli->error);
+    if ($result==null) {
+         api_return(array());
     }else{
         // wanneer er een key aanwezig was, verwachten we 1 object, geen array
         if($key){
@@ -186,7 +186,7 @@ function execute_statement(mysqli_stmt $stmt){
 
     // stoppen met uitvoering en een foutmelding geven
     if(count($stmt->error_list)){
-        api_error(500,"Kon het statement niet uitvoeren".PHP_EOL.$stmt->error_list);
+        api_error(500,"Kon het statement niet uitvoeren".PHP_EOL.print_r($stmt->error_list,false));
     }
 
     $result = $stmt->get_result();

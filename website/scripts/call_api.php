@@ -69,7 +69,9 @@ function CallAPI($method, $url, $data = false)
 
     // indien het geen json result is geven we gewoon het resultaat terug
     $jsonResult = json_decode($result, true);
-    if($jsonResult){
+
+    // lege array lijkt als null herkend te worden, dit willen we niet
+    if($jsonResult!=null||is_array($jsonResult)){
         return $jsonResult;
     }else{
         return $result;
