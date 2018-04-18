@@ -24,9 +24,11 @@ Cors is allowed by default, you can change this in the api.config.php file.
 You can call the API using the website/script files.
 ```
 //performing a POST operation
+
 //the object
 $vehicle['make']="MyMake";
 $vehicle['brand']="MyBrand";
+
 // the call itself
 $vehicleTypes = CallAPI("POST","http://yourwebsite.com/extern/api.php/vehicles",json_encode($vehicle));
 ```
@@ -36,9 +38,11 @@ $vehicleTypes = CallAPI("GET","http://yourwebsite.com/extern/api.php/vehicles");
 ```
 ```
 //performing a PATCH/PUT operation
+
 //the object
 $vehicle['make']="MyMake";
 $vehicle['brand']="MyBrand";
+
 // the call itself
 $vehicleTypes = CallAPI("PATCH","http://yourwebsite.com/extern/api.php/vehicles/{id}",json_encode($vehicle));
 ```
